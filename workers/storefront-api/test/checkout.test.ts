@@ -13,5 +13,7 @@ describe('POST /api/checkout', () => {
     const res = await worker.fetch(request, env, ctx)
     await waitOnExecutionContext(ctx)
     expect(res.status).toBe(501)
+    const body = await res.json() as { error: string }
+    expect(body.error).toContain('Phase 3')
   })
 })
