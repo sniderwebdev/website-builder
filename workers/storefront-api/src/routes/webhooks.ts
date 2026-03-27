@@ -62,7 +62,7 @@ webhooks.post('/:provider', async (c) => {
             customerId: customer.id,
             lineItems,
             shippingAddress: checkoutSession.shippingAddress,
-            paymentProvider: provider === 'stripe' ? 'stripe' : 'stripe',
+            paymentProvider: 'stripe',
             paymentId: paymentId,
             subtotal: cart.subtotal,
             tax: 0,

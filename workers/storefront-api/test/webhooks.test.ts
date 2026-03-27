@@ -72,6 +72,7 @@ describe('POST /api/webhooks/stripe', () => {
 
   it('returns 400 when signature validation throws', async () => {
     setWebhookStubShouldFail(true)
+    mockValidateWebhook.mockRejectedValue(new Error('No signatures found matching the expected signature for payload'))
     const res = await postWebhook('{}')
     expect(res.status).toBe(400)
     const body = await res.json() as { error: string }
