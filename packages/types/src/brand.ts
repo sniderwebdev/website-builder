@@ -1,4 +1,5 @@
 import type { PaymentProviderKey } from './order'
+import type { ProductType } from './product'
 
 export interface BrandColors {
   primary: string
@@ -31,7 +32,7 @@ export interface BrandConfig {
     currency: string
     testMode: boolean
   }
-  productTypes: ('physical' | 'digital' | 'subscription')[]
+  productTypes: ProductType[]
   shipping: {
     defaultCountry: string
     freeShippingThreshold?: number // cents
