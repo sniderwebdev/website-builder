@@ -52,6 +52,7 @@ describe('GET /api/products/:slug', () => {
   beforeEach(async () => {
     await env.DB.prepare('DELETE FROM products').run()
     await env.CACHE.delete('product:test-product')
+    await env.CACHE.delete('product:cached-product')
   })
 
   it('returns 404 for unknown slug', async () => {
