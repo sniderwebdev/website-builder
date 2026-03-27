@@ -9,5 +9,9 @@ export interface Env {
 
 export type AppContext = {
   Bindings: Env
+}
+
+export type CartContext = {
+  Bindings: Env
   Variables: { sessionId: string }
 }
