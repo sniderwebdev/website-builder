@@ -53,7 +53,7 @@ export class StripeAdapter implements PaymentProvider {
     )
     return {
       event: event.type,
-      payload: event.data.object as Record<string, unknown>,
+      payload: event.data.object as unknown as Record<string, unknown>,
     }
   }
 }
