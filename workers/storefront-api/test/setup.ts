@@ -1,3 +1,5 @@
+// Inline migration — must stay in sync with packages/db/src/migrations/0001_initial.sql
+// (workerd cannot read files from paths containing spaces — see packages/db/test/setup.ts)
 import { env } from 'cloudflare:test'
 
 const INITIAL_SQL = `
