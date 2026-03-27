@@ -1,0 +1,65 @@
+import { describe, it, expect } from 'vitest'
+import { env } from 'cloudflare:test'
+import { setProduct, getProduct, deleteProduct } from '../src/product-cache'
+import { setCart, getCart, deleteCart } from '../src/cart-cache'
+import type { Product, Cart } from '@commerce/types'
+
+const mockProduct: Product = {
+  id: '1',
+  slug: 'test-product',
+  name: 'Test',
+  description: '',
+  type: 'physical',
+  status: 'published',
+  price: 1999,
+  images: [],
+  metadata: {},
+  createdAt: '2026-01-01T00:00:00Z',
+  updatedAt: '2026-01-01T00:00:00Z',
+}
+
+const mockCart: Cart = {
+  sessionId: 'sess-123',
+  items: [],
+  subtotal: 0,
+  createdAt: '2026-01-01T00:00:00Z',
+  updatedAt: '2026-01-01T00:00:00Z',
+}
+
+describe('product cache', () => {
+  it('sets and gets a product', async () => {
+    await setProduct(env.CACHE, mockProduct)
+    const result = await getProduct(env.CACHE, 'test-product')
+    expect(result).not.toBeNull()
+    expect(result?.name).toBe('Test')
+    expect(result?.price).toBe(1999)
+  })
+
+  it('returns null for missing product', async () => {
+    const result = await getProduct(env.CACHE, 'nonexistent')
+    expect(result).toBeNull()
+  })
+
+  it('deletes a product', async () => {
+    await setProduct(env.CACHE, mockProduct)
+    await deleteProduct(env.CACHE, 'test-product')
+    const result = await getProduct(env.CACHE, 'test-product')
+    expect(result).toBeNull()
+  })
+})
+
+describe('cart cache', () => {
+  it('sets and gets a cart', async () => {
+    await setCart(env.CACHE, mockCart)
+    const result = await getCart(env.CACHE, 'sess-123')
+    expect(result).not.toBeNull()
+    expect(result?.sessionId).toBe('sess-123')
+  })
+
+  it('deletes a cart', async () => {
+    await setCart(env.CACHE, mockCart)
+    await deleteCart(env.CACHE, 'sess-123')
+    const result = await getCart(env.CACHE, 'sess-123')
+    expect(result).toBeNull()
+  })
+})
