@@ -8,6 +8,17 @@
 export let stripeStubShouldFail = false
 export function setStripeStubShouldFail(value: boolean) { stripeStubShouldFail = value }
 
+// Module-level webhook control state
+export interface StubWebhookEvent {
+  type: string
+  data: { object: Record<string, unknown> }
+}
+export let webhookStubShouldFail = false
+export let webhookStubEvent: StubWebhookEvent = { type: 'test.event', data: { object: {} } }
+
+export function setWebhookStubShouldFail(value: boolean) { webhookStubShouldFail = value }
+export function setWebhookStubEvent(event: StubWebhookEvent) { webhookStubEvent = event }
+
 export default class Stripe {
   private readonly currency: string
 
@@ -34,7 +45,10 @@ export default class Stripe {
   }
 
   webhooks = {
-    constructEventAsync: async () => ({ type: 'test.event', data: { object: {} } }),
+    constructEventAsync: async () => {
+      if (webhookStubShouldFail) throw new Error('No signatures found matching the expected signature for payload')
+      return webhookStubEvent
+    },
   }
 
   static createSubtleCryptoProvider() { return {} }
