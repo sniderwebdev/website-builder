@@ -1,0 +1,29 @@
+{
+  "name": "@commerce/db",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "dev": "tsc --watch",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@commerce/types": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vite": "^6.0.0",
+    "vitest": "^4.1.0",
+    "@cloudflare/workers-types": "^4.0.0",
+    "@cloudflare/vitest-pool-workers": "^0.13.4"
+  }
+}

@@ -1,0 +1,23 @@
+name = "caramel-storefront-api"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "caramel-db"
+database_id = "PLACEHOLDER_D1_ID"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "PLACEHOLDER_KV_ID"
+
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "caramel-assets"
+
+[vars]
+BRAND_NAME = "Caramel"
+
+[dev]
+port = 8787
