@@ -28,7 +28,7 @@ export async function createOrder(
 ): Promise<Order> {
   const id = crypto.randomUUID()
   const now = new Date().toISOString()
-  const orderNumber = `ORD-${Date.now()}`
+  const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`
   await db
     .prepare(
       `INSERT INTO orders (id, order_number, customer_id, status, line_items, shipping_address,

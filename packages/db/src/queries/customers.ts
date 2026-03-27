@@ -27,7 +27,7 @@ export async function getCustomer(
   return row ? rowToCustomer(row as Record<string, unknown>) : null
 }
 
-export async function upsertCustomer(
+export async function getOrCreateCustomer(
   db: D1Database,
   input: Pick<Customer, 'email' | 'name'> & { phone?: string; acceptsMarketing?: boolean }
 ): Promise<Customer> {

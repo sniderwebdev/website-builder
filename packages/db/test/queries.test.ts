@@ -1,9 +1,12 @@
-import { describe, it, expect } from 'vitest'
+import { beforeAll, beforeEach, describe, it, expect } from 'vitest'
 import { env } from 'cloudflare:test'
 import { createProduct, getProduct, listProducts } from '../src/queries/products'
-import { createCollection } from '../src/queries/collections'
 
 describe('product queries', () => {
+  beforeEach(async () => {
+    await env.DB.prepare('DELETE FROM products').run()
+  })
+
   it('creates and retrieves a product by slug', async () => {
     const product = await createProduct(env.DB, {
       slug: 'test-product',
