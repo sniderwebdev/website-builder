@@ -1,8 +1,8 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import type { Env } from './types'
+import type { AppContext } from './types'
 
-const app = new Hono<{ Bindings: Env }>()
+const app = new Hono<AppContext>()
 
 app.use('*', cors())
 
