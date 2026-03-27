@@ -1,0 +1,26 @@
+{
+  "name": "@commerce/admin-api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "wrangler deploy --dry-run",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@commerce/types": "workspace:*",
+    "@commerce/db": "workspace:*",
+    "@commerce/cache": "workspace:*",
+    "hono": "^4.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "wrangler": "^3.60.0",
+    "@cloudflare/workers-types": "^4.0.0",
+    "vitest": "^4.1.0",
+    "vite": "^6.0.0",
+    "@cloudflare/vitest-pool-workers": "^0.13.4"
+  }
+}
