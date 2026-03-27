@@ -1,7 +1,21 @@
+import path from 'node:path'
 import { defineConfig } from 'vitest/config'
 import { cloudflareTest } from '@cloudflare/vitest-pool-workers'
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      // Stripe uses CJS modules (qs) that cannot run in the Cloudflare Workers
+      // test runtime. Replace it with a lightweight stub so the module graph
+      // resolves cleanly. Tests that use payment functionality mock
+      // @commerce/payment directly with vi.mock.
+      stripe: path.resolve('./test/__mocks__/stripe.ts'),
+      // Alias @commerce/payment to its TypeScript source so Vite processes it
+      // through its own module graph and vi.mock('@commerce/payment') can
+      // intercept the import in the worker runtime.
+      '@commerce/payment': path.resolve('../../packages/payment/src/index.ts'),
+    },
+  },
   plugins: [
     cloudflareTest({
       wrangler: { configPath: './wrangler.toml' },
