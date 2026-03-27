@@ -63,3 +63,42 @@ describe('cart cache', () => {
     expect(result).toBeNull()
   })
 })
+
+import { getCheckoutSession, setCheckoutSession, deleteCheckoutSession } from '../src/checkout-cache'
+import type { CheckoutSession } from '@commerce/types'
+
+const mockCheckoutSession: CheckoutSession = {
+  email: 'buyer@test.com',
+  name: 'Test Buyer',
+  shippingAddress: {
+    name: 'Test Buyer',
+    line1: '123 Main St',
+    city: 'Portland',
+    state: 'OR',
+    postalCode: '97201',
+    country: 'US',
+  },
+  acceptsMarketing: false,
+}
+
+describe('checkout session cache', () => {
+  it('sets and gets a checkout session', async () => {
+    await setCheckoutSession(env.CACHE, 'sess-checkout', mockCheckoutSession)
+    const result = await getCheckoutSession(env.CACHE, 'sess-checkout')
+    expect(result).not.toBeNull()
+    expect(result?.email).toBe('buyer@test.com')
+    expect(result?.shippingAddress.city).toBe('Portland')
+  })
+
+  it('returns null for missing session', async () => {
+    const result = await getCheckoutSession(env.CACHE, 'nonexistent-session')
+    expect(result).toBeNull()
+  })
+
+  it('deletes a checkout session', async () => {
+    await setCheckoutSession(env.CACHE, 'sess-delete', mockCheckoutSession)
+    await deleteCheckoutSession(env.CACHE, 'sess-delete')
+    const result = await getCheckoutSession(env.CACHE, 'sess-delete')
+    expect(result).toBeNull()
+  })
+})
