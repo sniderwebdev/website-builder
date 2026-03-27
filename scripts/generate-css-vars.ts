@@ -23,8 +23,7 @@ function generateCss(config: typeof brand): string {
 
   /* Typography */
   --font-heading: ${config.fonts.heading};
-  --font-body: ${config.fonts.body};
-  ${config.fonts.mono ? `--font-mono: ${config.fonts.mono};` : ''}
+  --font-body: ${config.fonts.body};${config.fonts.mono ? `\n  --font-mono: ${config.fonts.mono};` : ''}
 
   /* Shape */
   --radius: ${config.borderRadius};
