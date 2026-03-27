@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import type { AppContext } from './types'
 import { products } from './routes/products'
+import { collections } from './routes/collections'
 
 const app = new Hono<AppContext>()
 
@@ -12,5 +13,6 @@ app.get('/health', (c) =>
 )
 
 app.route('/api/products', products)
+app.route('/api/collections', collections)
 
 export default app
