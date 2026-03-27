@@ -39,6 +39,7 @@ export class StripeAdapter implements PaymentProvider {
       payment_intent: paymentId,
       ...(amount != null ? { amount } : {}),
     })
+    if (!refund.id) throw new Error('Stripe refund did not return an id')
     return { success: true, refundId: refund.id }
   }
 

@@ -115,6 +115,12 @@ describe('StripeAdapter.refund', () => {
 
     expect(mockCreateRefund).toHaveBeenCalledWith({ payment_intent: 'pi_test' })
   })
+
+  it('throws when stripe does not return a refund id', async () => {
+    mockCreateRefund.mockResolvedValue({ id: undefined })
+    const adapter = makeAdapter()
+    await expect(adapter.refund('pi_test', 100)).rejects.toThrow('refund did not return an id')
+  })
 })
 
 describe('StripeAdapter.validateWebhook', () => {
@@ -137,5 +143,11 @@ describe('StripeAdapter.validateWebhook', () => {
     )
     expect(result.event).toBe('payment_intent.succeeded')
     expect((result.payload as { id: string }).id).toBe('pi_test')
+  })
+
+  it('throws when constructEventAsync rejects (invalid signature)', async () => {
+    mockConstructEventAsync.mockRejectedValue(new Error('No signatures found matching'))
+    const adapter = makeAdapter()
+    await expect(adapter.validateWebhook('raw-body', 'bad-sig')).rejects.toThrow('No signatures found')
   })
 })
