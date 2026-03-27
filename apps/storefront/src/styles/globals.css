@@ -1,0 +1,37 @@
+:root {
+  /* Colors */
+  --color-primary: #C47D2B;
+  --color-secondary: #3D2B1F;
+  --color-accent: #E8B86D;
+  --color-background: #FEFAF5;
+  --color-surface: #FFFFFF;
+  --color-text: #1A1208;
+  --color-text-muted: #6B5A44;
+  --color-border: #E8DDD0;
+  --color-error: #DC2626;
+  --color-success: #16A34A;
+
+  /* Typography */
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  
+
+  /* Shape */
+  --radius: 4px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
