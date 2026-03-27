@@ -185,6 +185,9 @@ importers:
       '@commerce/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@commerce/payment':
+        specifier: workspace:*
+        version: link:../../packages/payment
       '@commerce/types':
         specifier: workspace:*
         version: link:../../packages/types

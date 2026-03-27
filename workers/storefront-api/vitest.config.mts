@@ -9,7 +9,12 @@ export default defineConfig({
         d1Databases: ['DB'],
         kvNamespaces: ['CACHE'],
         r2Buckets: ['ASSETS'],
-        bindings: { BRAND_NAME: 'Caramel' },
+        bindings: {
+          BRAND_NAME: 'Caramel',
+          STRIPE_SECRET_KEY: 'sk_test_placeholder',
+          STRIPE_WEBHOOK_SECRET: 'whsec_placeholder',
+          CURRENCY: 'usd',
+        },
       },
     }),
   ],

@@ -5,6 +5,9 @@ export interface Env {
   CACHE: KVNamespace
   ASSETS: R2Bucket
   BRAND_NAME: string
+  STRIPE_SECRET_KEY: string
+  STRIPE_WEBHOOK_SECRET: string
+  CURRENCY: string
 }
 
 export type AppContext = {

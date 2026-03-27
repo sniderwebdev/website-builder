@@ -13,6 +13,7 @@
     "@commerce/types": "workspace:*",
     "@commerce/db": "workspace:*",
     "@commerce/cache": "workspace:*",
+    "@commerce/payment": "workspace:*",
     "hono": "^4.4.0"
   },
   "devDependencies": {

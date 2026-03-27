@@ -18,6 +18,9 @@ bucket_name = "caramel-assets"
 
 [vars]
 BRAND_NAME = "Caramel"
+STRIPE_SECRET_KEY = "sk_test_placeholder"
+STRIPE_WEBHOOK_SECRET = "whsec_placeholder"
+CURRENCY = "usd"
 
 [dev]
 port = 8787
