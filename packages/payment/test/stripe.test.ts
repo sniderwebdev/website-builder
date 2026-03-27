@@ -151,3 +151,21 @@ describe('StripeAdapter.validateWebhook', () => {
     await expect(adapter.validateWebhook('raw-body', 'bad-sig')).rejects.toThrow('No signatures found')
   })
 })
+
+import { createPaymentProvider } from '../src/factory'
+
+describe('createPaymentProvider', () => {
+  it('returns a StripeAdapter for key "stripe"', () => {
+    const provider = createPaymentProvider('stripe', {
+      secretKey: 'sk_test_xxx',
+      webhookSecret: 'whsec_xxx',
+    })
+    expect(provider).toBeInstanceOf(StripeAdapter)
+  })
+
+  it('throws for unsupported provider key', () => {
+    expect(() =>
+      createPaymentProvider('paypal' as never, { secretKey: '', webhookSecret: '' })
+    ).toThrow("Payment provider 'paypal' is not implemented")
+  })
+})
