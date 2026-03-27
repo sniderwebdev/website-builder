@@ -32,6 +32,7 @@ async function req(
 describe('GET /api/cart', () => {
   beforeEach(async () => {
     await env.CACHE.delete(`cart:${SESSION}`)
+    await env.CACHE.delete('cart:brand-new-session')
   })
 
   it('returns empty cart when no session exists', async () => {
@@ -131,6 +132,11 @@ describe('PUT /api/cart/items/:productId', () => {
   beforeEach(async () => {
     await env.DB.prepare('DELETE FROM products').run()
     await env.CACHE.delete(`cart:${SESSION}`)
+  })
+
+  it('returns 404 when item not in cart', async () => {
+    const res = await req('PUT', '/api/cart/items/nonexistent-id', { quantity: 1 })
+    expect(res.status).toBe(404)
   })
 
   it('updates item quantity', async () => {

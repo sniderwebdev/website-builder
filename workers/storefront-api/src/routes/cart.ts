@@ -84,7 +84,8 @@ cart.put('/items/:productId', async (c) => {
     const item = existing.items.find(
       (i) => i.productId === productId && i.variantId === variantId
     )
-    if (item) item.quantity = quantity
+    if (!item) return c.json({ error: 'Item not in cart' }, 404)
+    item.quantity = quantity
   }
 
   existing.subtotal = calcSubtotal(existing.items)
