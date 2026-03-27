@@ -17,7 +17,15 @@ checkout.post('/', async (c) => {
     return c.json({ error: 'cart is empty or not found' }, 400)
   }
 
-  const input = await c.req.json<CheckoutInput>()
+  let input: CheckoutInput
+  try {
+    input = await c.req.json<CheckoutInput>()
+  } catch {
+    return c.json({ error: 'Invalid request body' }, 400)
+  }
+  if (!input.email || !input.name || !input.shippingAddress) {
+    return c.json({ error: 'Missing required fields: email, name, shippingAddress' }, 400)
+  }
 
   const provider = createPaymentProvider('stripe', {
     secretKey: c.env.STRIPE_SECRET_KEY,
@@ -25,11 +33,16 @@ checkout.post('/', async (c) => {
     currency: c.env.CURRENCY,
   })
 
-  const intent = await provider.createPaymentIntent(cart, {
-    email: input.email,
-    name: input.name,
-    ...(input.phone != null ? { phone: input.phone } : {}),
-  })
+  let intent: Awaited<ReturnType<typeof provider.createPaymentIntent>>
+  try {
+    intent = await provider.createPaymentIntent(cart, {
+      email: input.email,
+      name: input.name,
+      ...(input.phone != null ? { phone: input.phone } : {}),
+    })
+  } catch {
+    return c.json({ error: 'Payment processing failed' }, 502)
+  }
 
   const checkoutSession: CheckoutSession = {
     email: input.email,
