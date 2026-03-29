@@ -10,7 +10,11 @@ export const requireAuth: MiddlewareHandler<AdminContext> = async (c, next) => {
   const token = authorization.slice(7)
   try {
     const payload = await verify(token, c.env.JWT_SECRET, 'HS256')
-    c.set('user', payload as unknown as JwtPayload)
+    const { sub, email, role } = payload as Record<string, unknown>
+    if (typeof sub !== 'string' || typeof email !== 'string' || (role !== 'owner' && role !== 'editor')) {
+      throw new Error('Invalid token payload')
+    }
+    c.set('user', { sub, email, role, exp: payload['exp'] as number })
     await next()
   } catch {
     return c.json({ error: 'Unauthorized' }, 401)
