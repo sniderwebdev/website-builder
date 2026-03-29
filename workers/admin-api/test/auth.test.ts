@@ -48,6 +48,11 @@ describe('hashPassword / verifyPassword', () => {
     const [h1, h2] = await Promise.all([hashPassword('pw'), hashPassword('pw')])
     expect(h1).not.toBe(h2)
   })
+
+  it('verifyPassword returns false for a malformed stored hash', async () => {
+    expect(await verifyPassword('secret', 'notahash')).toBe(false)
+    expect(await verifyPassword('secret', '')).toBe(false)
+  })
 })
 
 // ─── POST /api/auth/login ─────────────────────────────────────────────────────

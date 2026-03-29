@@ -1,6 +1,9 @@
+// workers/admin-api/src/index.ts
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import type { D1Database, KVNamespace, R2Bucket } from '@cloudflare/workers-types'
+import { requireAuth } from './middleware/auth'
+import authRoutes from './routes/auth'
 
 export interface Env {
   DB: D1Database
@@ -18,9 +21,17 @@ app.get('/health', (c) =>
   c.json({ status: 'ok', service: 'admin-api', brand: c.env.BRAND_NAME })
 )
 
-// Placeholder — all /api/* routes return 401 until Phase 4 implements auth
-app.use('/api/*', async (c) => {
-  return c.json({ error: 'Unauthorized' }, 401)
-})
+// Public
+app.route('/api/auth', authRoutes)
+
+// All /api/* routes below this line require a valid JWT
+app.use('/api/*', requireAuth)
+
+// TODO 4.3: mount product routes
+// TODO 4.4: mount collection routes
+// TODO 4.5: mount order routes
+// TODO 4.6: mount customer routes
+// TODO 4.7: mount content routes
+// TODO 4.8: mount settings routes
 
 export default app
