@@ -20,6 +20,9 @@ export async function hashPassword(password: string): Promise<string> {
 
 export async function verifyPassword(password: string, stored: string): Promise<boolean> {
   const [saltHex, storedHex] = stored.split(':')
+  if (!saltHex || !storedHex) {
+    return false
+  }
   const salt = fromHex(saltHex)
   const encoder = new TextEncoder()
   const key = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveBits'])
