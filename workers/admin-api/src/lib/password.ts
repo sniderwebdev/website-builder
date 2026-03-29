@@ -31,5 +31,5 @@ export async function verifyPassword(password: string, stored: string): Promise<
     key,
     256
   )
-  return toHex(new Uint8Array(bits)) === storedHex
+  return crypto.subtle.timingSafeEqual(bits, fromHex(storedHex).buffer as ArrayBuffer)
 }
