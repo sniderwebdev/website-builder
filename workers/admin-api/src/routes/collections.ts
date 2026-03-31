@@ -26,8 +26,9 @@ collections.post('/', async (c) => {
     return c.json({ error: 'Invalid request body' }, 400)
   }
 
-  const { slug, name } = body
-  if (!slug?.trim() || !name?.trim()) {
+  const slug = body.slug?.trim()
+  const name = body.name?.trim()
+  if (!slug || !name) {
     return c.json({ error: 'slug and name are required' }, 400)
   }
 
