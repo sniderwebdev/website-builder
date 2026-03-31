@@ -72,6 +72,17 @@ export async function getProduct(
   return row ? rowToProduct(row as Record<string, unknown>) : null
 }
 
+export async function getProductById(
+  db: D1Database,
+  id: string
+): Promise<Product | null> {
+  const row = await db
+    .prepare('SELECT * FROM products WHERE id = ?')
+    .bind(id)
+    .first()
+  return row ? rowToProduct(row as Record<string, unknown>) : null
+}
+
 export async function listProducts(
   db: D1Database,
   opts: { status?: ProductStatus; collectionId?: string; limit?: number } = {}
