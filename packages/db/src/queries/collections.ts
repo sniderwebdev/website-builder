@@ -51,3 +51,55 @@ export async function listCollections(db: D1Database): Promise<Collection[]> {
     .all()
   return rows.results.map((r) => rowToCollection(r as Record<string, unknown>))
 }
+
+export async function getCollectionById(
+  db: D1Database,
+  id: string
+): Promise<Collection | null> {
+  const row = await db
+    .prepare('SELECT * FROM collections WHERE id = ?')
+    .bind(id)
+    .first()
+  return row ? rowToCollection(row as Record<string, unknown>) : null
+}
+
+export async function updateCollection(
+  db: D1Database,
+  id: string,
+  updates: Partial<Pick<Collection, 'name' | 'description' | 'imageKey' | 'sortOrder' | 'seoTitle' | 'seoDescription'>>
+): Promise<void> {
+  const fieldMap: Record<string, string> = {
+    name: 'name',
+    description: 'description',
+    imageKey: 'image_key',
+    sortOrder: 'sort_order',
+    seoTitle: 'seo_title',
+    seoDescription: 'seo_description',
+  }
+  const setClauses: string[] = []
+  const values: unknown[] = []
+  for (const [key, col] of Object.entries(fieldMap)) {
+    if (key in updates) {
+      setClauses.push(`${col} = ?`)
+      values.push((updates as Record<string, unknown>)[key])
+    }
+  }
+  if (setClauses.length === 0) return
+  setClauses.push('updated_at = ?')
+  values.push(new Date().toISOString())
+  values.push(id)
+  await db
+    .prepare(`UPDATE collections SET ${setClauses.join(', ')} WHERE id = ?`)
+    .bind(...values)
+    .run()
+}
+
+export async function deleteCollection(
+  db: D1Database,
+  id: string
+): Promise<void> {
+  await db
+    .prepare('DELETE FROM collections WHERE id = ?')
+    .bind(id)
+    .run()
+}
