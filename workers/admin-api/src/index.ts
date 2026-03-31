@@ -5,6 +5,7 @@ import type { D1Database, KVNamespace, R2Bucket } from '@cloudflare/workers-type
 import { requireAuth } from './middleware/auth'
 import authRoutes from './routes/auth'
 import productsRoutes from './routes/products'
+import collectionsRoutes from './routes/collections'
 
 export interface Env {
   DB: D1Database
@@ -29,7 +30,7 @@ app.route('/api/auth', authRoutes)
 app.use('/api/*', requireAuth)
 
 app.route('/api/products', productsRoutes)
-// TODO 4.4: mount collection routes
+app.route('/api/collections', collectionsRoutes)
 // TODO 4.5: mount order routes
 // TODO 4.6: mount customer routes
 // TODO 4.7: mount content routes
