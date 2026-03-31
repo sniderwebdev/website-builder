@@ -9,7 +9,8 @@
     "test": "turbo test",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
-    "generate:css": "tsx scripts/generate-css-vars.ts"
+    "generate:css": "tsx scripts/generate-css-vars.ts",
+    "db:seed-admin": "tsx scripts/setup-admin-user.ts"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
