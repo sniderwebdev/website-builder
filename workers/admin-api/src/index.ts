@@ -4,6 +4,7 @@ import { cors } from 'hono/cors'
 import type { D1Database, KVNamespace, R2Bucket } from '@cloudflare/workers-types'
 import { requireAuth } from './middleware/auth'
 import authRoutes from './routes/auth'
+import productsRoutes from './routes/products'
 
 export interface Env {
   DB: D1Database
@@ -27,7 +28,7 @@ app.route('/api/auth', authRoutes)
 // All /api/* routes below this line require a valid JWT
 app.use('/api/*', requireAuth)
 
-// TODO 4.3: mount product routes
+app.route('/api/products', productsRoutes)
 // TODO 4.4: mount collection routes
 // TODO 4.5: mount order routes
 // TODO 4.6: mount customer routes
