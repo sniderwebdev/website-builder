@@ -12,7 +12,7 @@
 - [x] **4.1** JWT auth middleware + `POST /api/auth/login`
 - [x] **4.2** Admin user seeding script (`scripts/setup-admin-user.ts`)
 - [x] **4.3** Products CRUD (`GET/POST /api/products`, `GET/PUT/DELETE /api/products/:id`)
-- [ ] **4.4** Collections CRUD (`GET/POST /api/collections`, `GET/PUT/DELETE /api/collections/:id`)
+- [x] **4.4** Collections CRUD (`GET/POST /api/collections`, `GET/PUT/DELETE /api/collections/:id`)
 - [ ] **4.5** Orders management (`GET /api/orders`, `PUT /api/orders/:id/status`, `POST /api/orders/:id/refund`)
 - [ ] **4.6** Customers view + export (`GET /api/customers`, `GET /api/customers/:id`)
 - [ ] **4.7** Content management (`GET/PUT /api/content/:key`, `POST /api/content/:key/publish`)
