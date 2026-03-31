@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 // scripts/setup-admin-user.ts
 
-import { execSync } from 'node:child_process'
+import { execFileSync } from 'node:child_process'
 import { randomUUID } from 'node:crypto'
 
 // ─── Parse CLI args ───────────────────────────────────────────────────────────
@@ -61,12 +61,13 @@ async function hashPassword(pwd: string): Promise<string> {
     `VALUES ('${esc(id)}', '${esc(email)}', '${esc(passwordHash)}', '${esc(role)}', '${esc(createdAt)}')`,
   ].join(' ')
 
-  const localFlag = local ? ' --local' : ''
-  const cmd = `wrangler d1 execute caramel-db --command "${sql}"${localFlag}`
-
   console.log(`Creating admin user: ${email} (${role})...`)
   try {
-    execSync(cmd, { stdio: 'inherit', cwd: 'workers/admin-api' })
+    execFileSync(
+      'wrangler',
+      ['d1', 'execute', 'caramel-db', '--command', sql, ...(local ? ['--local'] : [])],
+      { stdio: 'inherit', cwd: 'workers/admin-api' }
+    )
     console.log(`✓ Admin user created: ${email}`)
   } catch {
     console.error('Failed to create admin user. Check that the DB is initialised and wrangler is authenticated.')
