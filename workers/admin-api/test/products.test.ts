@@ -194,10 +194,13 @@ describe('PUT /api/products/:id', () => {
       body: { name: 'Premium Hat', price: 4999, status: 'published' },
     })
     expect(res.status).toBe(200)
-    const body = await res.json() as { product: { name: string; price: number; status: string } }
+    const body = await res.json() as { product: { name: string; price: number; status: string; slug: string; type: string; description: string } }
     expect(body.product.name).toBe('Premium Hat')
     expect(body.product.price).toBe(4999)
     expect(body.product.status).toBe('published')
+    expect(body.product.slug).toBe('test-hat')
+    expect(body.product.type).toBe('physical')
+    expect(body.product.description).toBe('A fine hat')
   })
 })
 

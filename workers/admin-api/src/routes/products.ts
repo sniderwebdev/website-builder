@@ -39,7 +39,7 @@ products.post('/', async (c) => {
   }
 
   const { slug, name, type, price } = body
-  if (!slug || !name || !type || price === undefined) {
+  if (!slug?.trim() || !name?.trim() || !type || price === undefined) {
     return c.json({ error: 'slug, name, type, and price are required' }, 400)
   }
   if (!VALID_TYPES.includes(type as ProductType)) {
@@ -102,8 +102,19 @@ products.put('/:id', async (c) => {
     return c.json({ error: 'No valid fields to update' }, 400)
   }
 
+  if ('price' in updates && (typeof updates.price !== 'number' || updates.price < 0)) {
+    return c.json({ error: 'price must be a non-negative number' }, 400)
+  }
+  if ('comparePrice' in updates && (typeof updates.comparePrice !== 'number' || updates.comparePrice < 0)) {
+    return c.json({ error: 'comparePrice must be a non-negative number' }, 400)
+  }
+  if ('status' in updates && !VALID_STATUSES.includes(updates.status as ProductStatus)) {
+    return c.json({ error: 'status must be draft, published, or archived' }, 400)
+  }
+
   await updateProduct(c.env.DB, existing.id, updates)
   const updated = await getProductById(c.env.DB, existing.id)
+  if (!updated) return c.json({ error: 'Failed to retrieve updated product' }, 500)
   return c.json({ product: updated })
 })
 
