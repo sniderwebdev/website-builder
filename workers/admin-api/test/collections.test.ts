@@ -139,6 +139,16 @@ describe('PUT /api/collections/:id', () => {
     expect(res.status).toBe(400)
   })
 
+  it('returns 400 when sortOrder is not a non-negative integer', async () => {
+    const created = await req('/api/collections', { method: 'POST', body: BASE_COLLECTION })
+    const { collection } = await created.json() as { collection: { id: string } }
+    const res = await req(`/api/collections/${collection.id}`, {
+      method: 'PUT',
+      body: { sortOrder: -1 },
+    })
+    expect(res.status).toBe(400)
+  })
+
   it('updates name and sortOrder; unmodified fields are preserved', async () => {
     const created = await req('/api/collections', { method: 'POST', body: BASE_COLLECTION })
     const { collection } = await created.json() as { collection: { id: string } }
